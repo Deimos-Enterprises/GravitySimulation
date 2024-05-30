@@ -17,64 +17,6 @@ const scalingConstants = {
 }
 
 
-class TitleScene extends Phaser.Scene {
-    constructor() {
-        super('title-scene')
-    }
-    preload() {
-        this.load.image('logo', 'res/logo.png');
-        this.load.image('teambutton', 'res/teambutton.png');
-        this.load.image('infobutton', 'res/infobutton.png');
-
-
-    }
-    create() {
-        console.log('Title Scene');
-        this.logo = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'logo');
-        this.logo.setInteractive();
-        this.logo.on('pointerdown', () => {this.scene.start('mars-scene')});
-
-        this.teamButton = this.add.image(0.2 * sizes.width, 0.25 * sizes.height, 'teambutton');
-        this.teamButton.setInteractive();
-        this.teamButton.on('pointerdown', () => {this.scene.start('team-scene')});
-        this.infoButton = this.add.image(0.8 * sizes.width, 0.75 * sizes.height, 'infobutton');
-        this.infoButton.setInteractive();
-        this.infoButton.on('pointerdown', () => {this.scene.start('info-scene')});
-    }
-
-    update() {
-
-    }
-}
-
-class TeamScene extends Phaser.Scene {
-    constructor() {
-        super('team-scene')
-    }
-    preload() {
-        this.load.image('team-background', 'res/teambutton.png');
-    }
-    create() {
-        console.log('Team Scene');
-        this.background = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'team-background');
-    }
-    update() {}
-}
-
-class InfoScene extends Phaser.Scene {
-    constructor() {
-        super('info-scene')
-    }
-    preload() {
-        this.load.image('info-background', 'res/infobutton.png');
-    }
-    create() {
-        console.log('Info Scene');
-        this.background = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'info-background');
-    }
-    update() {}
-}
-
 class MarsScene extends Phaser.Scene {
     constructor() {
         super('mars-scene')
@@ -82,7 +24,7 @@ class MarsScene extends Phaser.Scene {
     preload() {
         this.load.image('mars-background', 'res/marsbackground.jpg');
         this.load.image('earth-background', 'res/earthbackground.jpg');
-        this.load.spritesheet('martian', 'res/martian.png', {frameWidth: 122, frameHeight: 158})
+        this.load.spritesheet('martian', 'res/martian.png', {frameWidth: 120, frameHeight: 162})
         this.load.image('ruler', 'res/ruler.png');
     }
     create() {
@@ -91,15 +33,51 @@ class MarsScene extends Phaser.Scene {
         this.earthBackground = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'earth-background');
         this.earthBackground.setScale(sizes.width / 313, sizes.height / 200);
         this.marsBackground = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'mars-background');
-        this.martian = this.createInteractable('martian', 122, 158, 1, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
-        this.ruler = this.add.image(0.5 * sizes.width, 0.5 * sizes.height, 'ruler');
-        this.ruler.setScale(sizes.height / 2868);
+        this.marsBackground.setScale(sizes.width / 1744, sizes.height / 980);
+
+        let martianName = 'martian';
+        this.martian = this.createInteractable(martianName, 0.5 * sizes.width, 0 * sizes.height, 1);
+        // this.martian.anims.create({
+        //     key: 'moving',
+        //     frames: this.anims.generateFrameNumbers(martianName, {start: 0, end: 26}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });
+        // this.martian.anims.create({
+        //     key: 'idle',
+        //     frames: this.anims.generateFrameNumbers(martianName, {frames: [1]}),
+        //     frameRate: 8,
+        //     repeat: -1
+        // });
+
+        let x = 0.5 * sizes.width;
+        let x2 = (x / sizes.width + 0.02) * sizes.width;
+        let y = 0;
+        let scale = 0.1 * sizes.height / 32;
+        let rulerHeight = 2868;
+        this.ruler = this.add.image(x, 0.5 * sizes.height, 'ruler');
+        this.ruler.setScale(sizes.height / rulerHeight);
         this.ruler.angle = 90;
+        let yDelta = sizes.height / 10.2;
+        let yOffset = 0.01 * sizes.height;
+
+        //text
+        this.rText50 = this.add.text(x2, y + yOffset, `50m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText45 = this.add.text(x2, y + 1 * yDelta, `45m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText40 = this.add.text(x2, y + 2 * yDelta, `40m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText35 = this.add.text(x2, y + 3 * yDelta, `35m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText30 = this.add.text(x2, y + 4 * yDelta, `30m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText25 = this.add.text(x2, y + 5 * yDelta, `25m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText20 = this.add.text(x2, sizes.height - 4 * yDelta - 2 * yOffset, `20m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText15 = this.add.text(x2, sizes.height - 3 * yDelta - 2 * yOffset, `15m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText10 = this.add.text(x2, sizes.height - 2 * yDelta - 2 * yOffset, `10m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText5 = this.add.text(x2, sizes.height - 1 * yDelta - 2 * yOffset, `5m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
+        this.rText0 = this.add.text(x2, sizes.height - 2 * yOffset, `0m`, { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'}).setOrigin(0.5).setScale(scale);
 
         this.isEarth = false;
         this.keyE = this.input.keyboard.addKey('E');
 
-        this.timerText = this.add.text(0.01 * sizes.width, sizes.height * 0.01, 'Time Falling(s): 0', { font: '"Press Start 2P"' });
+        this.timerText = this.add.text(0.01 * sizes.width, sizes.height * 0.01, 'Time Falling(s): 0', { font: 'Press Start 2P', fontSize: '24px', antialias: false, color: '#ffffff'});
         this.timerText.setScale(3, 3); 
         // this.velocityText = this.add.text(0.01 * sizes.width, sizes.height * 0.06, 'Vertical Velocity(m/s): 0', { font: '"Press Start 2P"' });
         // this.velocityText.setScale(3, 3);
@@ -123,7 +101,9 @@ class MarsScene extends Phaser.Scene {
 
         if(this.martian.body.velocity.y == 0) {
             this.lastTime = time * 0.001;
+            // this.martian.anims.play('idle', true);
         }else {
+            // this.martian.anims.play('moving', true);
             this.timerText.text = 'Time Falling(s): ' + this.formatTime(time * 0.001 - this.lastTime);
         }
         // var velocity = Math.round((this.martian.body.velocity.y + Number.EPSILON) * 1000) / 1000;
@@ -154,25 +134,11 @@ class MarsScene extends Phaser.Scene {
         }
     }
 
-    createInteractable(name, width, height, scale, moving, idle) {
-        var temp = this.physics.add.sprite(width, height, name).setScale(scale, scale);
+    createInteractable(name, x, y, scale) {
+        var temp = this.physics.add.sprite(x, y, name).setScale(scale, scale).setOrigin(0.5);
         temp.setActive(true);
         temp.velocityScaleX = 1;
         temp.velocityScaleYs = 1;
-
-        //animations
-        this.anims.create({
-            key: name + '-moving',
-            frames: this.anims.generateFrameNumbers(name, {frames: moving}),
-            frameRate: 8,
-            repeat: -1
-        });
-        this.anims.create({
-            key: name + '-idle',
-            frames: this.anims.generateFrameNumbers(name, {frames: idle}),
-            frameRate: 8,
-            repeat: -1
-        });
 
         // Mars physics
         temp.setBounce(0);
@@ -191,6 +157,8 @@ class MarsScene extends Phaser.Scene {
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
             gameObject.x = dragX;
             gameObject.y = dragY;
+            gameObject.setVelocityX(0);
+            gameObject.setVelocityY(0);
         });
 
         this.input.on('dragend', function (pointer, gameObject) {
@@ -222,7 +190,7 @@ const config = {
             debug:true
         }
     },
-    scene: [TitleScene, TeamScene, InfoScene, MarsScene]
+    scene: [MarsScene]
 }
 
 const game = new Phaser.Game(config)
